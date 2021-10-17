@@ -41,9 +41,7 @@
 #include "cpufeatures.h"
 #include "_cpyrit_cpu.h"
 //#include <sys/auxv.h>
-#ifdef COMPILE_AESNI
-    #include <wmmintrin.h>
-#endif
+
 
 static PyObject *PlatformString;
 static PyTypeObject CowpattyResult_type;
@@ -2323,13 +2321,6 @@ static void pathconfig(void)
 
     cpufeatures = detect_cpu();
 
-    #ifdef COMPILE_AESNI
-    if (cpufeatures & HAVE_AESNI)
-    {
-        PlatformString = PyString_FromString("SSE2/AES");
-        ccmp_encrypt = ccmp_encrypt_aesni;
-    }
-    #endif
 
     #ifdef COMPILE_SSE2
     if (cpufeatures & HAVE_SSE2)
